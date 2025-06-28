@@ -2,7 +2,7 @@ import streamlit as st
 import boto3
 
 USERS = {
-    "nouhaila": {
+    "admin-nouhaila": {
         "aws_access_key": st.secrets["nouhaila_aws_key"],
         "aws_secret_key": st.secrets["nouhaila_aws_secret"]
     },
@@ -19,11 +19,21 @@ USERS = {
 def login():
     st.title("🔐 Authentification AWS")
     username = st.text_input("Utilisateur")
-    password = st.text_input("Mot de passe AWS (Access Key)", type="password")
+    access_key_input = st.text_input("Clé d'accès AWS", type="password")
+    secret_key_input = st.text_input("Clé secrète AWS", type="password")
 
     if st.button("Connexion"):
         user = USERS.get(username)
-        if user and user["aws_access_key"] == password:
+        if user:
+            # Debug temporaire
+            st.write(f"Access key attendue : {repr(user['aws_access_key'])}")
+            st.write(f"Access key entrée   : {repr(access_key_input)}")
+            st.write(f"Secret key attendue : {repr(user['aws_secret_key'])}")
+            st.write(f"Secret key entrée   : {repr(secret_key_input)}")
+
+        if user and \
+           user["aws_access_key"].strip() == access_key_input.strip() and \
+           user["aws_secret_key"].strip() == secret_key_input.strip():
             st.session_state["user"] = username
             st.session_state["aws_key"] = user["aws_access_key"]
             st.session_state["aws_secret"] = user["aws_secret_key"]
@@ -31,6 +41,7 @@ def login():
             st.experimental_rerun()
         else:
             st.error("Identifiants invalides")
+
 
 def get_aws_session():
     if "aws_key" in st.session_state and "aws_secret" in st.session_state:
