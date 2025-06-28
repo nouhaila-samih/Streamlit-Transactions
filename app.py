@@ -19,6 +19,7 @@ top_produit_dir = "results/top_produits/"
 transactions_dir = "results/transactions_enrichies"
 sales_day_dir = "results/ventes_par_jour"
 
+st.title(f"Bienvenue {st.session_state['user']} dans l'application principale")
 
 #Chargement des fichiers
 transactions = load_csv_from_s3_folder(session,transactions_dir)

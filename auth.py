@@ -24,13 +24,6 @@ def login():
 
     if st.button("Connexion"):
         user = USERS.get(username)
-        if user:
-            # Debug temporaire
-            st.write(f"Access key attendue : {repr(user['aws_access_key'])}")
-            st.write(f"Access key entrée   : {repr(access_key_input)}")
-            st.write(f"Secret key attendue : {repr(user['aws_secret_key'])}")
-            st.write(f"Secret key entrée   : {repr(secret_key_input)}")
-
         if user and \
            user["aws_access_key"].strip() == access_key_input.strip() and \
            user["aws_secret_key"].strip() == secret_key_input.strip():
@@ -45,10 +38,14 @@ def login():
 
 def get_aws_session():
     if "aws_key" in st.session_state and "aws_secret" in st.session_state:
-        return boto3.Session(
-            aws_access_key_id=st.session_state["aws_key"],
-            aws_secret_access_key=st.session_state["aws_secret"],
-            region_name="us-east-1"
-        )
-    else:
-        return None
+        try:
+            session = boto3.Session(
+                aws_access_key_id=st.session_state["aws_key"],
+                aws_secret_access_key=st.session_state["aws_secret"],
+                region_name="us-east-1"
+            )
+            return session
+        except Exception as e:
+            st.error(f"Erreur de connexion AWS: {e}")
+            return None
+    return None
