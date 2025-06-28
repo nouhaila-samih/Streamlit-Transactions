@@ -32,6 +32,7 @@ def login():
             st.session_state["aws_secret"] = user["aws_secret_key"]
             st.success(f"Bienvenue, {username}")
             st.experimental_rerun()
+            return
         else:
             st.error("Identifiants invalides")
 
