@@ -17,10 +17,10 @@ USERS = {
 }
 
 def login():
-    st.title("🔐 Authentification AWS")
-    username = st.text_input("Utilisateur")
-    access_key_input = st.text_input("Clé d'accès AWS", type="password")
-    secret_key_input = st.text_input("Clé secrète AWS", type="password")
+    st.title("Bienvenue - Veuillez vous connecter")
+    username = st.text_input("Username")
+    access_key_input = st.text_input("Access Key ID", type="password")
+    secret_key_input = st.text_input("Secret Access Key", type="password")
 
     if st.button("Connexion"):
         user = USERS.get(username)
@@ -32,6 +32,7 @@ def login():
             st.session_state["aws_secret"] = user["aws_secret_key"]
             st.success(f"Bienvenue, {username}")
             st.experimental_rerun()
+            return
         else:
             st.error("Identifiants invalides")
 
