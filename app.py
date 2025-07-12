@@ -133,8 +133,8 @@ if selected == "Enriched Data":
             mime="text/csv"
         )
 
-if selected == "🔎 Data Profiling":
-    st.header("Profiling automatique des données")
+if selected == "Data Profiling":
+    st.header("🔎 Profiling automatique des données")
 
     st.write("Statistiques descriptives et distributions rapides")
 
