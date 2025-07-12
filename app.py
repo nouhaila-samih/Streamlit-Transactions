@@ -1,6 +1,7 @@
 import streamlit as st
 import plotly.express as px
 import boto3
+import pandas as pd
 from streamlit_option_menu import option_menu
 from auth import login, get_aws_session
 from data_loader import load_csv_from_s3_folder
@@ -49,22 +50,10 @@ if selected == "Home":
     - Visualisation interactive des KPIs, incluant les top produits et l’évolution des ventes
     - Intégration fluide avec les données stockées dans AWS S3
 
-    Utilisez le menu latéral pour naviguer rapidement entre les différentes sections.
     """)
 
     st.markdown("---")
 
-    st.markdown("### Navigation rapide")
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("📊 Accéder aux KPIs"):
-            st.session_state['option_menu'] = "KPIs"
-            st.experimental_rerun()
-
-    with col2:
-        if st.button("🛒 Explorer les données enrichies"):
-            st.session_state['option_menu'] = "Enriched Data"
-            st.experimental_rerun()
 
 if selected == "KPIs":
     st.header("📊 KPIs")
@@ -90,20 +79,37 @@ if selected == "KPIs":
     # --- Ventes par jour
     st.subheader("📅 Ventes par jour")
     if not sales_by_day.empty:
-        if 'date' not in sales_by_day.columns:
-            st.error("La colonne 'date' est manquante dans le fichier ventes_par_jour.")
-        else:
-            sales_by_day['date'] = pd.to_datetime(sales_by_day['date'], errors='coerce')
-            fig2 = px.line(
-                sales_by_day,
-                x="date",
-                y="chiffre_affaires",
-                title="Évolution quotidienne du chiffre d’affaires",
-                labels={"chiffre_affaires": "Chiffre d’affaires (€)", "date": "Date"},
-                markers=True
-            )
-            fig2.update_layout(xaxis_title="Date", yaxis_title="Chiffre d’affaires (€)")
-            st.plotly_chart(fig2, use_container_width=True)
+
+        sales_by_day['date'] = pd.to_datetime(sales_by_day['date'], errors='coerce')
+        fig2 = px.line(
+            sales_by_day,
+            x="date",
+            y="nombre_transactions",
+            title="Évolution quotidienne des ventes",
+            labels={"nombre_transactions": "Nombre de ventes", "date": "Date"},
+            markers=True
+        )
+        fig2.update_layout(xaxis_title="Date", yaxis_title="Nombres de ventes")
+        st.plotly_chart(fig2, use_container_width=True)
+    else:
+        st.warning("Aucune donnée de ventes par jour disponible.")
+
+    # --- Ventes par jour
+    st.subheader("📈 Chiffre d'affaire par jour")
+    if not sales_by_day.empty:
+
+        sales_by_day['date'] = pd.to_datetime(sales_by_day['date'], errors='coerce')
+        fig2 = px.line(
+            sales_by_day,
+            x="date",
+            y="total_ventes",
+            title="Évolution quotidienne du Chiffre d'affaire (MAD)",
+            labels={"total_ventes": "Chiffre d'affaire (MAD)", "date": "Date"},
+            markers=True
+            color_discrete_sequence=["#6F42C1"]
+        )
+        fig2.update_layout(xaxis_title="Date", yaxis_title="Chiffre d'affaire (MAD)")
+        st.plotly_chart(fig2, use_container_width=True)
     else:
         st.warning("Aucune donnée de ventes par jour disponible.")
 

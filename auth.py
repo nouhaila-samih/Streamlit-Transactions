@@ -17,7 +17,10 @@ USERS = {
 }
 
 def login():
-    st.title("Bienvenue - Veuillez vous connecter")
+    st.markdown(
+    "## <span style='color:blue;'>Welcome to AWS-Streamlit APP</span>",
+    unsafe_allow_html=True
+    )
     username = st.text_input("Username")
     access_key_input = st.text_input("Access Key ID", type="password")
     secret_key_input = st.text_input("Secret Access Key", type="password")
