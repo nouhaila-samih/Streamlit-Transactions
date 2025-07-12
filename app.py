@@ -65,9 +65,6 @@ if selected == "KPIs":
     unsafe_allow_html=True
     )
 
-    # Affichage du total de transactions
-    st.metric("Nombre total de transactions", len(transactions))
-
     # --- Top produits
     st.subheader("#5 Top produits par nombre de transactions 🏆")
     df = top_products[['name', 'transaction_count']]
