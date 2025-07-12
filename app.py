@@ -105,7 +105,7 @@ if selected == "KPIs":
             y="total_ventes",
             title="Évolution quotidienne du Chiffre d'affaire (MAD)",
             labels={"total_ventes": "Chiffre d'affaire (MAD)", "date": "Date"},
-            markers=True
+            markers=True,
             color_discrete_sequence=["#6F42C1"]
         )
         fig2.update_layout(xaxis_title="Date", yaxis_title="Chiffre d'affaire (MAD)")
