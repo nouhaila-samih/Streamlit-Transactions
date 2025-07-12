@@ -56,13 +56,20 @@ if selected == "Home":
 
 
 if selected == "KPIs":
-    st.header("📊 KPIs")
+    st.markdown(
+    """
+    <h3 style='text-align: center; color: blue;'>
+        📊 KPIs
+    </h3>
+    """,
+    unsafe_allow_html=True
+    )
 
     # Affichage du total de transactions
     st.metric("Nombre total de transactions", len(transactions))
 
     # --- Top produits
-    st.subheader("🏆 Top produits par nombre de transactions")
+    st.subheader("#5 Top produits par nombre de transactions 🏆")
     df = top_products[['name', 'transaction_count']]
     fig = px.bar(
         df,
@@ -87,7 +94,8 @@ if selected == "KPIs":
             y="nombre_transactions",
             title="Évolution quotidienne des ventes",
             labels={"nombre_transactions": "Nombre de ventes", "date": "Date"},
-            markers=True
+            markers=True,
+            color_discrete_sequence=["#0dd7ce"]
         )
         fig2.update_layout(xaxis_title="Date", yaxis_title="Nombres de ventes")
         st.plotly_chart(fig2, use_container_width=True)
@@ -118,7 +126,7 @@ if selected == "Enriched Data":
     st.title("Données de transactions enrichies")
 
     if transactions is not None:
-        st.success("Données de transactions enrichies")
+
         st.dataframe(transactions)
 
         st.download_button(
@@ -128,7 +136,7 @@ if selected == "Enriched Data":
             mime="text/csv"
         )
 
-if selected == "Data Profiling":
+if selected == "🔎 Data Profiling":
     st.header("Profiling automatique des données")
 
     st.write("Statistiques descriptives et distributions rapides")
